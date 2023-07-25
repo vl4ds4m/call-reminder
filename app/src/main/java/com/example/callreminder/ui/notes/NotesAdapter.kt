@@ -22,7 +22,7 @@ class NotesAdapter(
 
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
         holder.noteTitle.text = list[position].title
-        holder.noteTime.text = list[position].time.toString()
+        holder.noteTime.text = list[position].time
 
         holder.noteCard.setOnClickListener { listener.onClick(list[holder.adapterPosition]) }
 
