@@ -1,7 +1,10 @@
 package com.example.callreminder.ui
 
+import android.Manifest
 import android.app.Activity
+import android.app.NotificationChannel
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,6 +12,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -40,6 +46,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
     private val notesClickListener = object : NotesClickListener {
         override fun onClick(note: Note) {
+
+            /*val notificationManager = NotificationManagerCompat.from(applicationContext)
+            if (ActivityCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) return
+            notificationManager.notify(0, builder.build())*/
+
             val intent = Intent(applicationContext, NoteActivity::class.java)
             intent.putExtra("isNewNote", false)
             intent.putExtra("note", note)
@@ -52,13 +67,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         }
     }
 
-    private fun showPopUp(cardView: CardView) {
-        val popupMenu = PopupMenu(this, cardView)
-        popupMenu.setOnMenuItemClickListener(this)
-        popupMenu.inflate(R.menu.popup_menu)
-        popupMenu.show()
-    }
-
+//    private lateinit var builder: NotificationCompat.Builder
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -73,6 +83,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
         emptyListView = findViewById(R.id.empty_list)
         emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
+
+        /*builder = NotificationCompat
+            .Builder(applicationContext, NotificationChannel.DEFAULT_CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_notifications_none_24)
+            .setContentTitle("Title")
+            .setContentText("Content")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)*/
     }
 
     override fun onClick(p0: View?) {
@@ -127,5 +144,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
             }
         }
         return false
+    }
+
+    private fun showPopUp(cardView: CardView) {
+        val popupMenu = PopupMenu(this, cardView)
+        popupMenu.setOnMenuItemClickListener(this)
+        popupMenu.inflate(R.menu.popup_menu)
+        popupMenu.show()
     }
 }
