@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Call Reminder</string>
+    <string name="list_name">List of Calls</string>
+    <string name="add_button_text">Add a new call</string>
+    <string name="empty_list_text">No Call</string>
+    <string name="delete_note_text">Delete the note</string>
+    <string name="save_button_text">Save</string>
+    <string name="empty_note_title">Empty Note Title</string>
+    <string name="empty_note_descr">Empty Note Description</string>
+    <string name="empty_note_phone">Empty Note Phone Number</string>
+    <string name="empty_note_time">Empty Note Call Time</string>
+    <string name="note_title_text">Note Title</string>
+    <string name="note_descr_text">Note Description (optional)</string>
+    <string name="note_phone_text">Note Phone Number</string>
+    <string name="note_time_text">Note Call Time (HH:mm)</string>
+    <string name="note_date_text">Note Call Date (yyyy-MM-dd)</string>
+</resources>
