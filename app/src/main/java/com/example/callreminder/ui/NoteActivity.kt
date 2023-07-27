@@ -52,8 +52,8 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(p0: View?) {
-        when (p0!!.id) {
+    override fun onClick(view: View?) {
+        when (view!!.id) {
             R.id.save_button -> {
                 fillNote(currentNote)
             }
