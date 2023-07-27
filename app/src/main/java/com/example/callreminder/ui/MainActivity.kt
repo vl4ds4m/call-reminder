@@ -1,8 +1,11 @@
 package com.example.callreminder.ui
 
 import android.app.Activity
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +23,9 @@ import com.example.callreminder.db.AppDB
 import com.example.callreminder.elements.Note
 import com.example.callreminder.ui.notes.NotesAdapter
 import com.example.callreminder.ui.notes.NotesClickListener
+import java.time.LocalDate
+import java.time.LocalTime
+import java.util.Calendar
 
 private const val newNoteReqCode = 1
 private const val currentNoteReqCode = 2
@@ -93,6 +99,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
                 notes.addAll(notesDB.getDAO().getAll())
                 emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
                 notesAdapter.notifyDataSetChanged()
+
+                scheduleNotification(newNote)
             }
         }
 
@@ -141,5 +149,44 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         )
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
+    }
+
+    private fun scheduleNotification(note: Note) {
+        val intent = Intent(applicationContext, CallNotification::class.java)
+        val message = note.title
+        intent.putExtra(idExtra, note.id)
+        intent.putExtra(messageExtra, message)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            note.id,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val time = getTime(note)
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            time,
+            pendingIntent
+        )
+    }
+
+    private fun getTime(note: Note): Long {
+        val localDate = LocalDate.parse(note.time.split(" ")[0])
+        val localTime = LocalTime.parse(note.time.split(" ")[1])
+
+        val year = localDate.year
+        val month = localDate.monthValue - 1
+        val day = localDate.dayOfMonth
+        val hour = localTime.hour
+        val minute = localTime.minute
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day, hour, minute, 0)
+
+        return calendar.timeInMillis
     }
 }
