@@ -20,9 +20,6 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var editTextDate: EditText
     private lateinit var editTextTime: EditText
 
-    private var isNewNote: Boolean = false
-    private lateinit var currentNote: Note
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
@@ -33,34 +30,33 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         editTextDate = findViewById(R.id.editTextDate)
         editTextTime = findViewById(R.id.editTextTime)
 
-        isNewNote = intent.getBooleanExtra("isNewNote", false)
+        val isNewNote = intent.getBooleanExtra("isNewNote", false)
 
         if (isNewNote) {
-            currentNote = Note()
             editTextTitle.setText("")
             editTextDescr.setText("")
             editTextPhone.setText("")
             editTextDate.setText("")
             editTextTime.setText("")
         } else {
-            currentNote = intent.getSerializableExtra("note") as Note
-            editTextTitle.setText(currentNote.title)
-            editTextDescr.setText(currentNote.description)
-            editTextPhone.setText(currentNote.phone)
-            editTextDate.setText(currentNote.time.split(" ")[0])
-            editTextTime.setText(currentNote.time.split(" ")[1])
+            val note = intent.getSerializableExtra("note") as Note
+            editTextTitle.setText(note.title)
+            editTextDescr.setText(note.description)
+            editTextPhone.setText(note.phone)
+            editTextDate.setText(note.time.split(" ")[0])
+            editTextTime.setText(note.time.split(" ")[1])
         }
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.save_button -> {
-                fillNote(currentNote)
+                fillNote()
             }
         }
     }
 
-    private fun fillNote(note: Note) {
+    private fun fillNote() {
         if (
             editTextTitle.text.isBlank() ||
             editTextPhone.text.isBlank() ||
@@ -97,13 +93,14 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        note.title = editTextTitle.text.toString()
-        note.description = editTextDescr.text.toString()
-        note.phone = editTextPhone.text.toString()
-        note.time = editTextDate.text.toString() + " " + editTextTime.text.toString()
+        val newNote = Note()
+        newNote.title = editTextTitle.text.toString()
+        newNote.description = editTextDescr.text.toString()
+        newNote.phone = editTextPhone.text.toString()
+        newNote.time = editTextDate.text.toString() + " " + editTextTime.text.toString()
 
         val intent = Intent()
-        intent.putExtra("note", currentNote)
+        intent.putExtra("note", newNote)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

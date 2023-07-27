@@ -27,8 +27,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
 
-private const val newNoteReqCode = 1
-private const val currentNoteReqCode = 2
+private const val NEW_NOTE_REQUEST_CODE = 0
+private const val UPDATED_NOTE_REQUEST_CODE = 1
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -48,10 +48,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
     private val notesClickListener = object : NotesClickListener {
         override fun onClick(note: Note) {
+            selectedNote = note
             val intent = Intent(applicationContext, NoteActivity::class.java)
             intent.putExtra("isNewNote", false)
             intent.putExtra("note", note)
-            startActivityForResult(intent, currentNoteReqCode)
+            startActivityForResult(intent, UPDATED_NOTE_REQUEST_CODE)
         }
 
         override fun onLongClick(note: Note, cardView: CardView) {
@@ -83,41 +84,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
             R.id.add_button -> {
                 val intent = Intent(applicationContext, NoteActivity::class.java)
                 intent.putExtra("isNewNote", true)
-                startActivityForResult(intent, newNoteReqCode)
+                startActivityForResult(intent, NEW_NOTE_REQUEST_CODE)
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == newNoteReqCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                val newNote: Note = data?.getSerializableExtra("note") as Note
-                notesDB.getDAO().insert(newNote)
-                notes.clear()
-                notes.addAll(notesDB.getDAO().getAll())
-                emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
-                notesAdapter.notifyDataSetChanged()
-
-                scheduleNotification(newNote)
+        if (resultCode == Activity.RESULT_OK) {
+            val newNote: Note = data?.getSerializableExtra("note") as Note
+            if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
+                notesDB.getDAO().delete(selectedNote)
             }
-        }
-
-        if (requestCode == currentNoteReqCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                val newNote: Note = data?.getSerializableExtra("note") as Note
-                notesDB.getDAO().update(
-                    newNote.id,
-                    newNote.title,
-                    newNote.description,
-                    newNote.phone,
-                    newNote.time
-                )
-                notes.clear()
-                notes.addAll(notesDB.getDAO().getAll())
-                notesAdapter.notifyDataSetChanged()
-            }
+            notesDB.getDAO().insert(newNote)
+            notes.clear()
+            notes.addAll(notesDB.getDAO().getAll())
+            emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
+            notesAdapter.notifyDataSetChanged()
+//            scheduleNotification(newNote)
         }
     }
 

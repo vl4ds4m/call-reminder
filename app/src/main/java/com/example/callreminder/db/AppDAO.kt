@@ -15,22 +15,6 @@ interface AppDAO {
     @Query("SELECT * FROM notes ORDER BY time ASC")
     fun getAll(): List<Note>
 
-    @Query(
-        "UPDATE notes SET " +
-                "title = :title, " +
-                "description = :description, " +
-                "phone = :phone, " +
-                "time = :time " +
-                "WHERE id = :id"
-    )
-    fun update(
-        id: Int,
-        title: String,
-        description: String,
-        phone: String,
-        time: String
-    )
-
     @Delete
     fun delete(note: Note)
 }
