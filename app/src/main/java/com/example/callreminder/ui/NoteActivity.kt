@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.example.callreminder.R
-import com.example.callreminder.elements.Note
+import com.example.callreminder.Note
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeParseException
@@ -30,7 +30,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         editTextDate = findViewById(R.id.editTextDate)
         editTextTime = findViewById(R.id.editTextTime)
 
-        val isNewNote = intent.getBooleanExtra("isNewNote", false)
+        val isNewNote = intent.getBooleanExtra(isNewNoteExtra, false)
 
         if (isNewNote) {
             editTextTitle.setText("")
@@ -39,7 +39,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
             editTextDate.setText("")
             editTextTime.setText("")
         } else {
-            val note = intent.getSerializableExtra("note") as Note
+            val note = intent.getSerializableExtra(noteExtra) as Note
             editTextTitle.setText(note.title)
             editTextDescr.setText(note.description)
             editTextPhone.setText(note.phone)
@@ -100,7 +100,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         newNote.time = editTextDate.text.toString() + " " + editTextTime.text.toString()
 
         val intent = Intent()
-        intent.putExtra("note", newNote)
+        intent.putExtra(noteExtra, newNote)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
