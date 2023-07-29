@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
             notes.addAll(notesDB.getDAO().getAll())
             emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
             notesAdapter.notifyDataSetChanged()
-//            scheduleNotification(newNote)
+            scheduleNotification(newNote)
         }
     }
 
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     private fun createNotificationChannel() {
         val channel = NotificationChannel(
             channelID,
-            "CallReminderNotificationChannel",
+            "Call Reminder Main Notification Channel",
             NotificationManager.IMPORTANCE_DEFAULT
         )
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
