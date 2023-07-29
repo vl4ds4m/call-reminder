@@ -144,6 +144,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         intent.putExtra(idExtra, note.id)
         intent.putExtra(titleExtra, note.title)
         intent.putExtra(textExtra, note.description)
+        intent.putExtra(phoneExtra, note.phone)
 
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
@@ -154,6 +155,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val time = getTime(note)
+//        val time = System.currentTimeMillis() + 3000
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
