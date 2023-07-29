@@ -92,16 +92,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            val newNote: Note = data?.getSerializableExtra("note") as Note
-            if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
-                notesDB.getDAO().delete(selectedNote)
+            val note: Note = data?.getSerializableExtra("note") as Note
+            if (requestCode == NEW_NOTE_REQUEST_CODE) {
+                val newNoteRowId = notesDB.getDAO().insert(note)
+                note.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
+            } else if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
+                note.id = selectedNote.id
+                notesDB.getDAO().update(note)
             }
-            notesDB.getDAO().insert(newNote)
             notes.clear()
             notes.addAll(notesDB.getDAO().getAll())
             emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
             notesAdapter.notifyDataSetChanged()
-            scheduleNotification(newNote)
+            scheduleNotification(note)
         }
     }
 
@@ -111,6 +114,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
                 notesDB.getDAO().delete(selectedNote)
                 notes.remove(selectedNote)
                 emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
+                cancelNotification(selectedNote)
                 notesAdapter.notifyDataSetChanged()
                 return true
             }
@@ -150,12 +154,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val time = getTime(note)
-
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            time,
-            pendingIntent
-        )
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
     private fun getTime(note: Note): Long {
@@ -172,5 +171,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         calendar.set(year, month, day, hour, minute, 0)
 
         return calendar.timeInMillis
+    }
+
+    private fun cancelNotification(note: Note) {
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            note.id,
+            Intent(applicationContext, CallNotification::class.java),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
     }
 }

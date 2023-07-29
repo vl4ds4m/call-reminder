@@ -15,11 +15,12 @@ class CallNotification : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notification = NotificationCompat.Builder(context, channelID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Don't forget to make the call.")
-            .setContentText(intent.getStringExtra(messageExtra))
+            .setContentTitle(intent.getStringExtra(messageExtra))
+            .setContentText(context.getString(R.string.notification_content_text))
             .build()
 
-        val  manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(intent.getIntExtra(idExtra, 0), notification)
+        val noteID = intent.getIntExtra(idExtra, 0)
+        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        manager.notify(noteID, notification)
     }
 }
