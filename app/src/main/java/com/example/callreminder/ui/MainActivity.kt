@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.room.Room
 import com.example.callreminder.R
 import com.example.callreminder.db.AppDB
-import com.example.callreminder.elements.Note
+import com.example.callreminder.Note
+import com.example.callreminder.services.CallNotification
+import com.example.callreminder.services.channelID
 import com.example.callreminder.ui.notes.NotesAdapter
 import com.example.callreminder.ui.notes.NotesClickListener
 import java.time.LocalDate
@@ -29,6 +31,9 @@ import java.util.Calendar
 
 private const val NEW_NOTE_REQUEST_CODE = 0
 private const val UPDATED_NOTE_REQUEST_CODE = 1
+
+const val noteExtra = "CallNote"
+const val isNewNoteExtra = "isNewNote"
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -49,9 +54,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     private val notesClickListener = object : NotesClickListener {
         override fun onClick(note: Note) {
             selectedNote = note
-            val intent = Intent(applicationContext, NoteActivity::class.java)
-            intent.putExtra("isNewNote", false)
-            intent.putExtra("note", note)
+            val intent = Intent(this@MainActivity, NoteActivity::class.java)
+            intent.putExtra(isNewNoteExtra, false)
+            intent.putExtra(noteExtra, note)
             startActivityForResult(intent, UPDATED_NOTE_REQUEST_CODE)
         }
 
@@ -82,8 +87,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.add_button -> {
-                val intent = Intent(applicationContext, NoteActivity::class.java)
-                intent.putExtra("isNewNote", true)
+                val intent = Intent(this, NoteActivity::class.java)
+                intent.putExtra(isNewNoteExtra, true)
                 startActivityForResult(intent, NEW_NOTE_REQUEST_CODE)
             }
         }
@@ -92,7 +97,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            val note: Note = data?.getSerializableExtra("note") as Note
+            val note = data?.getSerializableExtra(noteExtra) as Note
             if (requestCode == NEW_NOTE_REQUEST_CODE) {
                 val newNoteRowId = notesDB.getDAO().insert(note)
                 note.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
@@ -140,22 +145,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     }
 
     private fun scheduleNotification(note: Note) {
-        val intent = Intent(applicationContext, CallNotification::class.java)
-        intent.putExtra(idExtra, note.id)
-        intent.putExtra(titleExtra, note.title)
-        intent.putExtra(textExtra, note.description)
-        intent.putExtra(phoneExtra, note.phone)
-
+        val intent = Intent(this, CallNotification::class.java)
+        intent.putExtra(noteExtra, note)
         val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
+            this,
             note.id,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val time = getTime(note)
-//        val time = System.currentTimeMillis() + 3000
+//        val time = getTime(note)
+        val time = System.currentTimeMillis() + 3000
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
@@ -177,9 +178,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
     private fun cancelNotification(note: Note) {
         val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
+            this,
             note.id,
-            Intent(applicationContext, CallNotification::class.java),
+            Intent(this, CallNotification::class.java),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
