@@ -9,14 +9,15 @@ import com.example.callreminder.R
 
 const val channelID = "CallReminderMainChannel"
 const val idExtra = "CallNotificationID"
-const val messageExtra = "CallNotificationMessage"
+const val titleExtra = "CallNotificationTitle"
+const val textExtra = "CallNotificationText"
 
 class CallNotification : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notification = NotificationCompat.Builder(context, channelID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(intent.getStringExtra(messageExtra))
-            .setContentText(context.getString(R.string.notification_content_text))
+            .setContentTitle(intent.getStringExtra(titleExtra))
+            .setContentText(intent.getStringExtra(textExtra))
             .build()
 
         val noteID = intent.getIntExtra(idExtra, 0)

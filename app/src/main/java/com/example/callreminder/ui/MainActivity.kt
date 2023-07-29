@@ -141,9 +141,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
     private fun scheduleNotification(note: Note) {
         val intent = Intent(applicationContext, CallNotification::class.java)
-        val message = note.title
         intent.putExtra(idExtra, note.id)
-        intent.putExtra(messageExtra, message)
+        intent.putExtra(titleExtra, note.title)
+        intent.putExtra(textExtra, note.description)
 
         val pendingIntent = PendingIntent.getBroadcast(
             applicationContext,
