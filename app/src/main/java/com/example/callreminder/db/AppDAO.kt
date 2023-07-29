@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.example.callreminder.elements.Note
+import com.example.callreminder.Note
 
 @Dao
 interface AppDAO {

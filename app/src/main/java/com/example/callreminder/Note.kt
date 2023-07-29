@@ -1,4 +1,4 @@
-package com.example.callreminder.elements
+package com.example.callreminder
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

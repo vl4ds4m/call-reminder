@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.callreminder.elements.Note
+import com.example.callreminder.Note
 import com.example.callreminder.R
 
 class NotesAdapter(
