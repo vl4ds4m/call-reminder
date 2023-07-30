@@ -17,10 +17,10 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.room.Room
 import com.example.callreminder.R
 import com.example.callreminder.db.AppDB
 import com.example.callreminder.Note
+import com.example.callreminder.db.getDB
 import com.example.callreminder.services.CallNotification
 import com.example.callreminder.services.channelID
 import com.example.callreminder.ui.notes.NotesAdapter
@@ -40,12 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var emptyListView: TextView
 
-    private val notesDB: AppDB by lazy {
-        Room.databaseBuilder(this, AppDB::class.java, "CallReminderApp")
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
-    }
+    private lateinit var notesDB: AppDB
 
     private var notes: MutableList<Note> = ArrayList()
 
@@ -70,6 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        notesDB = getDB(this)
         notes = ArrayList(notesDB.getDAO().getAll())
         notesAdapter = NotesAdapter(this, notes, notesClickListener)
 
