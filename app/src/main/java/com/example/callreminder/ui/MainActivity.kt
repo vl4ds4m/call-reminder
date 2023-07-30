@@ -80,6 +80,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         createNotificationChannel()
     }
 
+    override fun onResume() {
+        updateListView()
+        super.onResume()
+    }
+
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.add_button -> {
@@ -101,10 +106,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
                 note.id = selectedNote.id
                 notesDB.getDAO().update(note)
             }
-            notes.clear()
-            notes.addAll(notesDB.getDAO().getAll())
-            emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
-            notesAdapter.notifyDataSetChanged()
+            updateListView()
             scheduleNotification(note)
         }
     }
@@ -113,14 +115,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         when (item?.itemId) {
             R.id.delete -> {
                 notesDB.getDAO().delete(selectedNote)
-                notes.remove(selectedNote)
-                emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
                 cancelNotification(selectedNote)
-                notesAdapter.notifyDataSetChanged()
+                updateListView()
                 return true
             }
         }
         return false
+    }
+
+    private fun updateListView() {
+        notes.clear()
+        notes.addAll(notesDB.getDAO().getAll())
+        emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
+        notesAdapter.notifyDataSetChanged()
     }
 
     private fun showPopUp(cardView: CardView) {
