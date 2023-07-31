@@ -17,6 +17,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.callreminder.DATE_TIME_FORMATTER
 import com.example.callreminder.R
 import com.example.callreminder.db.AppDB
 import com.example.callreminder.Note
@@ -28,6 +29,7 @@ import com.example.callreminder.ui.notes.NotesClickListener
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
+import java.util.Date
 
 private const val NEW_NOTE_REQUEST_CODE = 0
 private const val UPDATED_NOTE_REQUEST_CODE = 1
@@ -158,24 +160,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val time = getTime(note)
+//        val time = getTime(note.dateTime)
         val time = System.currentTimeMillis() + 3000
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
-    private fun getTime(note: Note): Long {
-        val localDate = LocalDate.parse(note.time.split(" ")[0])
-        val localTime = LocalTime.parse(note.time.split(" ")[1])
-
-        val year = localDate.year
-        val month = localDate.monthValue - 1
-        val day = localDate.dayOfMonth
-        val hour = localTime.hour
-        val minute = localTime.minute
-
+    private fun getTime(dateTime: String): Long {
         val calendar = Calendar.getInstance()
-        calendar.set(year, month, day, hour, minute, 0)
-
+        calendar.time = DATE_TIME_FORMATTER.parse(dateTime) as Date
         return calendar.timeInMillis
     }
 

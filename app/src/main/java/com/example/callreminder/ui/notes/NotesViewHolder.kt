@@ -9,11 +9,11 @@ import com.example.callreminder.R
 class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val noteCard: CardView
     val noteTitle: TextView
-    val noteTime: TextView
+    val noteDateTime: TextView
 
     init {
-        noteCard = itemView.findViewById(R.id.note_card)
-        noteTitle = itemView.findViewById(R.id.note_title)
-        noteTime = itemView.findViewById(R.id.note_time)
+        noteCard = itemView.findViewById(R.id.noteCard)
+        noteTitle = itemView.findViewById(R.id.noteCardTitle)
+        noteDateTime = itemView.findViewById(R.id.noteCardDateTime)
     }
 }

@@ -22,6 +22,6 @@ interface AppDAO {
     @Query("SELECT id FROM notes WHERE rowId = :rowId")
     fun getNoteIdByRowId(rowId: Long): Int
 
-    @Query("SELECT * FROM notes ORDER BY time ASC")
+    @Query("SELECT * FROM notes ORDER BY dateTime ASC")
     fun getAll(): List<Note>
 }

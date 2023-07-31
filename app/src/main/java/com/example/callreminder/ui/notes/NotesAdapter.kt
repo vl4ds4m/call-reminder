@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.callreminder.Note
 import com.example.callreminder.R
+import com.example.callreminder.ui.getDateString
+import com.example.callreminder.ui.getTimeString
 
 class NotesAdapter(
     private val context: Context,
@@ -21,8 +23,11 @@ class NotesAdapter(
     override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
-        holder.noteTitle.text = list[position].title
-        holder.noteTime.text = list[position].time
+        val note = list[position]
+        val prettyDateTime = getDateString(note.dateTime) + "  " + getTimeString(note.dateTime)
+
+        holder.noteTitle.text = note.title
+        holder.noteDateTime.text = prettyDateTime
 
         holder.noteCard.setOnClickListener { listener.onClick(list[holder.adapterPosition]) }
 

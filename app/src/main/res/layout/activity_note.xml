@@ -8,61 +8,83 @@
     tools:context=".ui.NoteActivity">
 
     <EditText
-        android:id="@+id/editTextTitle"
+        android:id="@+id/noteTitle"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:autofillHints=""
-        android:ems="10"
+        android:background="@null"
         android:hint="@string/note_title_text"
-        android:inputType="text" />
+        android:inputType="textMultiLine"
+        android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/editTextDescr"
+        android:id="@+id/noteDescription"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:autofillHints=""
-        android:ems="10"
+        android:background="@null"
+        android:gravity="top"
         android:hint="@string/note_descr_text"
-        android:inputType="text" />
+        android:inputType="textMultiLine"
+        android:minHeight="80dp"
+        android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/editTextPhone"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/notePhone"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autofillHints=""
+            android:background="@null"
+            android:ems="10"
+            android:hint="@string/note_phone_text"
+            android:inputType="phone"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/contactButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Book"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noteDate"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/note_phone_text"
-        android:inputType="phone" />
-
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        android:autofillHints=""
-        android:ems="10"
+        android:gravity="center_vertical"
         android:hint="@string/note_date_text"
-        android:inputType="datetime|date" />
+        android:onClick="onClick"
+        android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/editTextTime"
+    <TextView
+        android:id="@+id/noteTime"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/note_time_text"
-        android:inputType="datetime|time" />
+        android:gravity="center_vertical"
+        android:hint="@string/note_date_text"
+        android:onClick="onClick"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/save_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
-        android:text="@string/save_button_text" />
-
+        android:text="@string/save_button_text"
+        android:textSize="24sp" />
 </LinearLayout>
