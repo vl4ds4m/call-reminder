@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.TimePicker
 import android.widget.Toast
 import com.example.callreminder.R
 import com.example.callreminder.Note
@@ -18,43 +17,29 @@ import com.example.callreminder.DATE_TIME_FORMATTER
 import java.util.Calendar
 import java.util.Date
 
-fun getDateString(dateTime: String): String {
-    val calendar = Calendar.getInstance()
-    calendar.time = DATE_TIME_FORMATTER.parse(dateTime) as Date
-    val year = calendar[Calendar.YEAR]
-    val monthNum = calendar[Calendar.MONTH] + 1
-    val day = calendar[Calendar.DAY_OF_MONTH]
-    return makeDateString(year, monthNum, day)
-}
-
 fun makeDateString(year: Int, monthNum: Int, day: Int): String {
     val month = when (monthNum) {
-        1 -> "Jan"
-        2 -> "Feb"
-        3 -> "Mar"
-        4 -> "Apr"
-        5 -> "May"
-        6 -> "Jun"
-        7 -> "Jul"
-        8 -> "Aug"
-        9 -> "Sep"
-        10 -> "Oct"
-        11 -> "Nov"
-        12 -> "Dec"
+        0 -> "Jan"
+        1 -> "Feb"
+        2 -> "Mar"
+        3 -> "Apr"
+        4 -> "May"
+        5 -> "Jun"
+        6 -> "Jul"
+        7 -> "Aug"
+        8 -> "Sep"
+        9 -> "Oct"
+        10 -> "Nov"
+        11 -> "Dec"
         else -> "???"
     }
     return "$day $month $year"
 }
 
-fun getTimeString(dateTime: String): String {
-    val calendar = Calendar.getInstance()
-    calendar.time = DATE_TIME_FORMATTER.parse(dateTime) as Date
-    val hour = calendar[Calendar.HOUR_OF_DAY]
-    val minute = calendar[Calendar.MINUTE]
-    return makeTimeString(hour, minute)
-}
-
 fun makeTimeString(hour: Int, minute: Int): String {
+    if (minute < 10) {
+        return "$hour:0$minute"
+    }
     return "$hour:$minute"
 }
 
@@ -67,7 +52,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var timePickerDialog: TimePickerDialog
-    private lateinit var timePicker: TimePicker
+    private lateinit var calendar: Calendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,33 +64,37 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         noteDate = findViewById(R.id.noteDate)
         noteTime = findViewById(R.id.noteTime)
 
-        createDatePicker()
-        createTimePicker()
-
+        calendar = Calendar.getInstance()
         val isNewNote = intent.getBooleanExtra(isNewNoteExtra, false)
-
         if (isNewNote) {
             noteTitle.setText("")
             noteDescription.setText("")
             notePhone.setText("")
-            noteDate.text = ""
-            noteTime.text = ""
         } else {
             val note = intent.getSerializableExtra(noteExtra) as Note
             noteTitle.setText(note.title)
             noteDescription.setText(note.description)
             notePhone.setText(note.phone)
-            noteDate.text = getDateString(note.dateTime)
-            noteTime.text = getTimeString(note.dateTime)
+            calendar.time = DATE_TIME_FORMATTER.parse(note.dateTime) as Date
         }
+        val year = calendar[Calendar.YEAR]
+        val month = calendar[Calendar.MONTH]
+        val day = calendar[Calendar.DAY_OF_MONTH]
+        val hour = calendar[Calendar.HOUR_OF_DAY]
+        val minute = calendar[Calendar.MINUTE]
+        noteDate.text = makeDateString(year, month, day)
+        noteTime.text = makeTimeString(hour, minute)
+
+        createDatePicker()
+        createTimePicker()
     }
 
     private fun createDatePicker() {
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
-            noteDate.text = makeDateString(year, month + 1, day)
+            calendar.set(year, month, day)
+            noteDate.text = makeDateString(year, month, day)
         }
 
-        val calendar = Calendar.getInstance()
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
@@ -116,12 +105,12 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun createTimePicker() {
-        val listener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-            this.timePicker = timePicker
+        val listener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+            calendar[Calendar.HOUR_OF_DAY] = hour
+            calendar[Calendar.MINUTE] = minute
             noteTime.text = makeTimeString(hour, minute)
         }
 
-        val calendar = Calendar.getInstance()
         val hour = calendar[Calendar.HOUR_OF_DAY]
         val minute = calendar[Calendar.MINUTE]
 
@@ -150,7 +139,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         if (noteTitle.text.isBlank() || noteDate.text.isBlank() || noteTime.text.isBlank()) {
             Toast.makeText(
                 this,
-                "Please, fill in all required fields.",
+                R.string.empty_field_warning_text,
                 Toast.LENGTH_SHORT
             ).show()
             return
@@ -160,23 +149,11 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         newNote.title = noteTitle.text.toString()
         newNote.description = noteDescription.text.toString()
         newNote.phone = notePhone.text.toString()
-        setDateTime(newNote)
+        newNote.dateTime = DATE_TIME_FORMATTER.format(calendar.time)
 
         val intent = Intent()
         intent.putExtra(noteExtra, newNote)
         setResult(Activity.RESULT_OK, intent)
         finish()
-    }
-
-    private fun setDateTime(note: Note) {
-        val year = datePickerDialog.datePicker.year
-        val month = datePickerDialog.datePicker.month
-        val day = datePickerDialog.datePicker.dayOfMonth
-        val hour = timePicker.hour
-        val minute = timePicker.minute
-
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, day, hour, minute)
-        note.dateTime = DATE_TIME_FORMATTER.format(calendar.time)
     }
 }

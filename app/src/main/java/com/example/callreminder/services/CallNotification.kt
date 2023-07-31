@@ -24,12 +24,12 @@ class CallNotification : BroadcastReceiver() {
 
         notificationBuilder.addAction(
             R.drawable.ic_call,
-            "Call",
+            context.getString(R.string.make_call_text),
             createCallIntent(context, note)
         )
         notificationBuilder.addAction(
             R.drawable.ic_check,
-            "Ready",
+            context.getString(R.string.complete_call_text),
             createCompletionIntent(context, note)
         )
 

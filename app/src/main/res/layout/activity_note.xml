@@ -54,7 +54,7 @@
             android:id="@+id/contactButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Phone Book"
+            android:text="@string/select_contact_text"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -85,6 +85,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
-        android:text="@string/save_button_text"
+        android:text="@string/save_note_text"
         android:textSize="24sp" />
 </LinearLayout>

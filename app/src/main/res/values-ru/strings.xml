@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Call Reminder</string>
+    <string name="list_name">Список звонков</string>
+    <string name="add_note_text">Добавить звонок</string>
+    <string name="empty_list_text">Нет звонков</string>
+    <string name="delete_note_text">Удалить звонок</string>
+    <string name="save_note_text">Сохранить</string>
+    <string name="note_title_text">Заголовок</string>
+    <string name="note_descr_text">Описание</string>
+    <string name="note_phone_text">Номер телефона</string>
+    <string name="note_time_text">Время звонка</string>
+    <string name="note_date_text">Дата звонка</string>
+    <string name="select_contact_text">Контакты</string>
+    <string name="make_call_text">Позвонить</string>
+    <string name="complete_call_text">Готово</string>
+    <string name="empty_field_warning_text">Пожалуйста, введите заголовок</string>
+</resources>
