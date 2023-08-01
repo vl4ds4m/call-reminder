@@ -12,8 +12,8 @@ class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val noteDateTime: TextView
 
     init {
-        noteCard = itemView.findViewById(R.id.noteCard)
-        noteTitle = itemView.findViewById(R.id.noteCardTitle)
-        noteDateTime = itemView.findViewById(R.id.noteCardDateTime)
+        noteCard = itemView.findViewById(R.id.note_card)
+        noteTitle = itemView.findViewById(R.id.note_card_title)
+        noteDateTime = itemView.findViewById(R.id.note_card_date_time)
     }
 }

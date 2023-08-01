@@ -8,7 +8,7 @@
     tools:context=".ui.NoteActivity">
 
     <EditText
-        android:id="@+id/noteTitle"
+        android:id="@+id/note_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -19,7 +19,7 @@
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/noteDescription"
+        android:id="@+id/note_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -39,7 +39,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/notePhone"
+            android:id="@+id/note_phone"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -51,7 +51,7 @@
             android:textSize="24sp" />
 
         <Button
-            android:id="@+id/contactButton"
+            android:id="@+id/contact_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_contact_text"
@@ -59,7 +59,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/noteDate"
+        android:id="@+id/note_date"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
@@ -69,7 +69,7 @@
         android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/noteTime"
+        android:id="@+id/note_time"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"

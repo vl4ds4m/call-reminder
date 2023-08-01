@@ -59,11 +59,11 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
 
-        noteTitle = findViewById(R.id.noteTitle)
-        noteDescription = findViewById(R.id.noteDescription)
-        notePhone = findViewById(R.id.notePhone)
-        noteDate = findViewById(R.id.noteDate)
-        noteTime = findViewById(R.id.noteTime)
+        noteTitle = findViewById(R.id.note_title)
+        noteDescription = findViewById(R.id.note_description)
+        notePhone = findViewById(R.id.note_phone)
+        noteDate = findViewById(R.id.note_date)
+        noteTime = findViewById(R.id.note_time)
 
         calendar = Calendar.getInstance()
         val isNewNote = intent.getBooleanExtra(isNewNoteExtra, false)
@@ -122,11 +122,11 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.noteDate -> {
+            R.id.note_date -> {
                 datePickerDialog.show()
             }
 
-            R.id.noteTime -> {
+            R.id.note_time -> {
                 timePickerDialog.show()
             }
 
