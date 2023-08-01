@@ -9,13 +9,13 @@ import com.example.callreminder.Note
 import com.example.callreminder.db.AppDB
 import com.example.callreminder.db.getDB
 import com.example.callreminder.ui.MainActivity
-import com.example.callreminder.ui.noteExtra
+import com.example.callreminder.ui.NOTE_EXTRA
 
 class CallCompletion : BroadcastReceiver() {
     private lateinit var notesDB: AppDB
 
     override fun onReceive(context: Context, intent: Intent) {
-        val note = intent.getSerializableExtra(noteExtra) as Note
+        val note = intent.getSerializableExtra(NOTE_EXTRA) as Note
 
         notesDB = getDB(context)
         notesDB.getDAO().delete(note)

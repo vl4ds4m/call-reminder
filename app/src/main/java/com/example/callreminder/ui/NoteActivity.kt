@@ -132,7 +132,25 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SELECT_CONTACT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val phone = data?.getStringExtra(PHONE_EXTRA)
+                notePhone.setText(phone)
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(
+                    this,
+                    R.string.no_contact_text,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
     private fun selectContact() {
+        val intent = Intent(this, ContactsActivity::class.java)
+        startActivityForResult(intent, SELECT_CONTACT_REQUEST_CODE)
     }
 
     private fun addNote() {

@@ -15,4 +15,5 @@
     <string name="make_call_text">Позвонить</string>
     <string name="complete_call_text">Готово</string>
     <string name="empty_field_warning_text">Пожалуйста, введите заголовок</string>
+    <string name="no_contact_text">Нет контактов</string>
 </resources>

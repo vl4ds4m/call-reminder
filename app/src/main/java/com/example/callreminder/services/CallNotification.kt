@@ -9,13 +9,13 @@ import android.net.Uri
 import androidx.core.app.NotificationCompat
 import com.example.callreminder.R
 import com.example.callreminder.Note
-import com.example.callreminder.ui.noteExtra
+import com.example.callreminder.ui.NOTE_EXTRA
 
 const val channelID = "CallReminderMainChannel"
 
 class CallNotification : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val note = intent.getSerializableExtra(noteExtra) as Note
+        val note = intent.getSerializableExtra(NOTE_EXTRA) as Note
 
         val notificationBuilder = NotificationCompat.Builder(context, channelID)
             .setSmallIcon(R.drawable.outline_notifications_24)
@@ -49,7 +49,7 @@ class CallNotification : BroadcastReceiver() {
 
     private fun createCompletionIntent(context: Context, note: Note): PendingIntent {
         val completionIntent = Intent(context, CallCompletion::class.java)
-        completionIntent.putExtra(noteExtra, note)
+        completionIntent.putExtra(NOTE_EXTRA, note)
         return PendingIntent.getBroadcast(
             context,
             note.id,
