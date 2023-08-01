@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.TextUtils
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,12 +66,9 @@ private fun getContacts(context: Context): ArrayList<Contact> {
             val idIndex = contactCursor.getColumnIndex(CONTACT_ID)
             val id = contactCursor.getInt(idIndex)
             if (phones.containsKey(id)) {
-                val contact = Contact()
-                contact.id = id
-                val contactName = contactCursor.getColumnIndex(DISPLAY_NAME)
-                contact.name = contactCursor.getString(contactName)
-                contact.phone = TextUtils.join(",", phones[id]!!.toTypedArray())
-                contacts.add(contact)
+                val nameIndex = contactCursor.getColumnIndex(DISPLAY_NAME)
+                val name = contactCursor.getString(nameIndex)
+                phones[id]?.forEach { contacts.add(Contact(name, it)) }
             }
         }
         contactCursor.close()
