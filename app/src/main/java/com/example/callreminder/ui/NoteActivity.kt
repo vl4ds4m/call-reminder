@@ -122,18 +122,14 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.note_date -> {
-                datePickerDialog.show()
-            }
-
-            R.id.note_time -> {
-                timePickerDialog.show()
-            }
-
-            R.id.save_button -> {
-                addNote()
-            }
+            R.id.note_date -> datePickerDialog.show()
+            R.id.note_time -> timePickerDialog.show()
+            R.id.save_button -> addNote()
+            R.id.contact_button -> selectContact()
         }
+    }
+
+    private fun selectContact() {
     }
 
     private fun addNote() {
