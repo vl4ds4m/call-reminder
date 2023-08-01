@@ -26,8 +26,6 @@ import com.example.callreminder.services.CallNotification
 import com.example.callreminder.services.channelID
 import com.example.callreminder.ui.notes.NotesAdapter
 import com.example.callreminder.ui.notes.NotesClickListener
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.Calendar
 import java.util.Date
 
@@ -99,15 +97,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            val note = data?.getSerializableExtra(noteExtra) as Note
-            if (requestCode == NEW_NOTE_REQUEST_CODE) {
-                val newNoteRowId = notesDB.getDAO().insert(note)
-                note.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
-            } else if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
-                note.id = selectedNote.id
-                notesDB.getDAO().update(note)
+            val newNote = data?.getSerializableExtra(noteExtra) as Note
+            val newNoteRowId = notesDB.getDAO().insert(newNote)
+            newNote.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
+            if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
+                notesDB.getDAO().delete(selectedNote)
+                cancelNotification(selectedNote)
             }
-            scheduleNotification(note)
+            scheduleNotification(newNote)
         }
     }
 
