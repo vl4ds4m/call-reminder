@@ -18,7 +18,7 @@ class CallNotification : BroadcastReceiver() {
         val note = intent.getSerializableExtra(noteExtra) as Note
 
         val notificationBuilder = NotificationCompat.Builder(context, channelID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.outline_notifications_24)
             .setContentTitle(note.title)
             .setContentText(note.description)
 
