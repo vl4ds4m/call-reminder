@@ -50,7 +50,6 @@ class CallNotification : BroadcastReceiver() {
     private fun createCompletionIntent(context: Context, note: Note): PendingIntent {
         val completionIntent = Intent(context, CallCompletion::class.java)
         completionIntent.putExtra(noteExtra, note)
-        completionIntent.action = Intent.ACTION_DELETE
         return PendingIntent.getBroadcast(
             context,
             note.id,
