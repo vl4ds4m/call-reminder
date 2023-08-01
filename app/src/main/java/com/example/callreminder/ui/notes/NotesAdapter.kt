@@ -47,6 +47,6 @@ class NotesAdapter(
         val hour = calendar[java.util.Calendar.HOUR_OF_DAY]
         val minute = calendar[java.util.Calendar.MINUTE]
 
-        return makeDateString(year, month, day) + "  " + makeTimeString(hour, minute)
+        return makeDateString(context, year, month, day) + "  " + makeTimeString(hour, minute)
     }
 }

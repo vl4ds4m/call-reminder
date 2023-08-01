@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,20 +18,20 @@ import com.example.callreminder.DATE_TIME_FORMATTER
 import java.util.Calendar
 import java.util.Date
 
-fun makeDateString(year: Int, monthNum: Int, day: Int): String {
+fun makeDateString(context: Context, year: Int, monthNum: Int, day: Int): String {
     val month = when (monthNum) {
-        0 -> "Jan"
-        1 -> "Feb"
-        2 -> "Mar"
-        3 -> "Apr"
-        4 -> "May"
-        5 -> "Jun"
-        6 -> "Jul"
-        7 -> "Aug"
-        8 -> "Sep"
-        9 -> "Oct"
-        10 -> "Nov"
-        11 -> "Dec"
+        0 -> context.getString(R.string.jan)
+        1 -> context.getString(R.string.feb)
+        2 -> context.getString(R.string.mar)
+        3 -> context.getString(R.string.apr)
+        4 -> context.getString(R.string.may)
+        5 -> context.getString(R.string.jun)
+        6 -> context.getString(R.string.jul)
+        7 -> context.getString(R.string.aug)
+        8 -> context.getString(R.string.sep)
+        9 -> context.getString(R.string.oct)
+        10 -> context.getString(R.string.nov)
+        11 -> context.getString(R.string.dec)
         else -> "???"
     }
     return "$day $month $year"
@@ -82,7 +83,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         val day = calendar[Calendar.DAY_OF_MONTH]
         val hour = calendar[Calendar.HOUR_OF_DAY]
         val minute = calendar[Calendar.MINUTE]
-        noteDate.text = makeDateString(year, month, day)
+        noteDate.text = makeDateString(this, year, month, day)
         noteTime.text = makeTimeString(hour, minute)
 
         createDatePicker()
@@ -92,7 +93,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
     private fun createDatePicker() {
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, day ->
             calendar.set(year, month, day)
-            noteDate.text = makeDateString(year, month, day)
+            noteDate.text = makeDateString(this, year, month, day)
         }
 
         val year = calendar[Calendar.YEAR]
