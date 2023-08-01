@@ -155,8 +155,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         )
 
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val time = getTime(note.dateTime)
-        val time = System.currentTimeMillis() + 3000
+        val time = getTime(note.dateTime)
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
