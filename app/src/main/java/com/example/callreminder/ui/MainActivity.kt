@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     private lateinit var emptyListView: TextView
 
     private lateinit var notesDB: AppDB
-
-    private var notes: MutableList<Note> = ArrayList()
+    private lateinit var notes: MutableList<Note>
 
     private lateinit var selectedNote: Note
 
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         setContentView(R.layout.activity_main)
 
         notesDB = getDB(this)
-        notes = ArrayList(notesDB.getDAO().getAll())
+        notes = ArrayList()
         notesAdapter = NotesAdapter(this, notes, notesClickListener)
 
         recyclerView = findViewById(R.id.notes)
@@ -83,8 +82,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     }
 
     override fun onResume() {
-        updateListView()
         super.onResume()
+        updateListView()
     }
 
     override fun onClick(view: View?) {
@@ -108,7 +107,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
                 note.id = selectedNote.id
                 notesDB.getDAO().update(note)
             }
-            updateListView()
             scheduleNotification(note)
         }
     }
