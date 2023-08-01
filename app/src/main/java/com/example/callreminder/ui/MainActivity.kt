@@ -32,8 +32,8 @@ import java.util.Date
 private const val NEW_NOTE_REQUEST_CODE = 0
 private const val UPDATED_NOTE_REQUEST_CODE = 1
 
-const val noteExtra = "CallNote"
-const val isNewNoteExtra = "isNewNote"
+const val NOTE_EXTRA = "CallNote"
+const val IS_NEW_NOTE_EXTRA = "isNewNote"
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         override fun onClick(note: Note) {
             selectedNote = note
             val intent = Intent(this@MainActivity, NoteActivity::class.java)
-            intent.putExtra(isNewNoteExtra, false)
-            intent.putExtra(noteExtra, note)
+            intent.putExtra(IS_NEW_NOTE_EXTRA, false)
+            intent.putExtra(NOTE_EXTRA, note)
             startActivityForResult(intent, UPDATED_NOTE_REQUEST_CODE)
         }
 
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         when (view!!.id) {
             R.id.add_button -> {
                 val intent = Intent(this, NoteActivity::class.java)
-                intent.putExtra(isNewNoteExtra, true)
+                intent.putExtra(IS_NEW_NOTE_EXTRA, true)
                 startActivityForResult(intent, NEW_NOTE_REQUEST_CODE)
             }
         }
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            val newNote = data?.getSerializableExtra(noteExtra) as Note
+            val newNote = data?.getSerializableExtra(NOTE_EXTRA) as Note
             val newNoteRowId = notesDB.getDAO().insert(newNote)
             newNote.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
             if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
 
     private fun scheduleNotification(note: Note) {
         val intent = Intent(this, CallNotification::class.java)
-        intent.putExtra(noteExtra, note)
+        intent.putExtra(NOTE_EXTRA, note)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             note.id,

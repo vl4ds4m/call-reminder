@@ -44,6 +44,9 @@ fun makeTimeString(hour: Int, minute: Int): String {
     return "$hour:$minute"
 }
 
+const val PHONE_EXTRA = "phoneExtra"
+private const val SELECT_CONTACT_REQUEST_CODE = 2
+
 class NoteActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var noteTitle: EditText
     private lateinit var noteDescription: EditText
@@ -66,13 +69,13 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         noteTime = findViewById(R.id.note_time)
 
         calendar = Calendar.getInstance()
-        val isNewNote = intent.getBooleanExtra(isNewNoteExtra, false)
+        val isNewNote = intent.getBooleanExtra(IS_NEW_NOTE_EXTRA, false)
         if (isNewNote) {
             noteTitle.setText("")
             noteDescription.setText("")
             notePhone.setText("")
         } else {
-            val note = intent.getSerializableExtra(noteExtra) as Note
+            val note = intent.getSerializableExtra(NOTE_EXTRA) as Note
             noteTitle.setText(note.title)
             noteDescription.setText(note.description)
             notePhone.setText(note.phone)
@@ -149,7 +152,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         newNote.dateTime = DATE_TIME_FORMATTER.format(calendar.time)
 
         val intent = Intent()
-        intent.putExtra(noteExtra, newNote)
+        intent.putExtra(NOTE_EXTRA, newNote)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
