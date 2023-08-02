@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,9 +29,6 @@ import com.example.callreminder.ui.notes.NotesAdapter
 import com.example.callreminder.ui.notes.NotesClickListener
 import java.util.Calendar
 import java.util.Date
-
-private const val NEW_NOTE_REQUEST_CODE = 0
-private const val UPDATED_NOTE_REQUEST_CODE = 1
 
 const val NOTE_EXTRA = "CallNote"
 const val IS_NEW_NOTE_EXTRA = "isNewNote"
@@ -51,12 +49,43 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
             val intent = Intent(this@MainActivity, NoteActivity::class.java)
             intent.putExtra(IS_NEW_NOTE_EXTRA, false)
             intent.putExtra(NOTE_EXTRA, note)
-            startActivityForResult(intent, UPDATED_NOTE_REQUEST_CODE)
+            updateNoteLauncher.launch(intent)
         }
 
         override fun onLongClick(note: Note, cardView: CardView) {
             selectedNote = note
             showPopUp(cardView)
+        }
+    }
+
+    private val createNoteLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val newNote = data?.getSerializableExtra(NOTE_EXTRA) as Note
+
+            val newNoteRowId = notesDB.getDAO().insert(newNote)
+            newNote.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
+
+            scheduleNotification(newNote)
+        }
+    }
+
+    private val updateNoteLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val newNote = data?.getSerializableExtra(NOTE_EXTRA) as Note
+
+            val newNoteRowId = notesDB.getDAO().insert(newNote)
+            newNote.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
+
+            notesDB.getDAO().delete(selectedNote)
+            cancelNotification(selectedNote)
+
+            scheduleNotification(newNote)
         }
     }
 
@@ -89,22 +118,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
             R.id.add_button -> {
                 val intent = Intent(this, NoteActivity::class.java)
                 intent.putExtra(IS_NEW_NOTE_EXTRA, true)
-                startActivityForResult(intent, NEW_NOTE_REQUEST_CODE)
+                createNoteLauncher.launch(intent)
             }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            val newNote = data?.getSerializableExtra(NOTE_EXTRA) as Note
-            val newNoteRowId = notesDB.getDAO().insert(newNote)
-            newNote.id = notesDB.getDAO().getNoteIdByRowId(newNoteRowId)
-            if (requestCode == UPDATED_NOTE_REQUEST_CODE) {
-                notesDB.getDAO().delete(selectedNote)
-                cancelNotification(selectedNote)
-            }
-            scheduleNotification(newNote)
         }
     }
 
