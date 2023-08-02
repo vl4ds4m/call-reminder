@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.callreminder.R
 import com.example.callreminder.Note
 import com.example.callreminder.DATE_TIME_FORMATTER
@@ -45,7 +46,6 @@ fun makeTimeString(hour: Int, minute: Int): String {
 }
 
 const val PHONE_EXTRA = "phoneExtra"
-private const val SELECT_CONTACT_REQUEST_CODE = 2
 
 class NoteActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var noteTitle: EditText
@@ -57,6 +57,22 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var timePickerDialog: TimePickerDialog
     private lateinit var calendar: Calendar
+
+    private val selectContactLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val phone = data?.getStringExtra(PHONE_EXTRA)
+            notePhone.setText(phone)
+        } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            Toast.makeText(
+                this,
+                R.string.no_contact_text,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,29 +144,11 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
             R.id.note_date -> datePickerDialog.show()
             R.id.note_time -> timePickerDialog.show()
             R.id.save_button -> addNote()
-            R.id.contact_button -> selectContact()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SELECT_CONTACT_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val phone = data?.getStringExtra(PHONE_EXTRA)
-                notePhone.setText(phone)
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Toast.makeText(
-                    this,
-                    R.string.no_contact_text,
-                    Toast.LENGTH_SHORT
-                ).show()
+            R.id.contact_button -> {
+                val intent = Intent(this, ContactsActivity::class.java)
+                selectContactLauncher.launch(intent)
             }
         }
-    }
-
-    private fun selectContact() {
-        val intent = Intent(this, ContactsActivity::class.java)
-        startActivityForResult(intent, SELECT_CONTACT_REQUEST_CODE)
     }
 
     private fun addNote() {
