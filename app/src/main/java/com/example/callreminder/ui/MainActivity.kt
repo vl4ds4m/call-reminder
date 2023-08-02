@@ -3,6 +3,8 @@ package com.example.callreminder.ui
 import android.Manifest
 import android.app.Activity
 import android.app.AlarmManager
+import android.app.AlertDialog
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -97,11 +99,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (!isGranted) {
-            Toast.makeText(
-                this,
-                R.string.read_contacts_permission_rejection_text,
-                Toast.LENGTH_LONG
-            ).show()
+            AlertDialog.Builder(this)
+                .setMessage(R.string.post_notifications_permission_rejection_text)
+                .show()
         }
     }
 

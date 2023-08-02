@@ -2,6 +2,7 @@ package com.example.callreminder.ui
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -79,11 +80,9 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (!isGranted) {
-            Toast.makeText(
-                this,
-                R.string.read_contacts_permission_rejection_text,
-                Toast.LENGTH_LONG
-            ).show()
+            AlertDialog.Builder(this)
+                .setMessage(R.string.post_notifications_permission_rejection_text)
+                .show()
         }
     }
 
