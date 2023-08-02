@@ -1,7 +1,6 @@
 package com.example.callreminder.ui
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -119,7 +118,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
 
-        val style = AlertDialog.THEME_HOLO_LIGHT
+        val style = androidx.appcompat.R.style.Base_Theme_AppCompat_Light_Dialog_Alert
 
         datePickerDialog = DatePickerDialog(this, style, listener, year, month, day)
     }
@@ -134,7 +133,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         val hour = calendar[Calendar.HOUR_OF_DAY]
         val minute = calendar[Calendar.MINUTE]
 
-        val style = AlertDialog.THEME_HOLO_LIGHT
+        val style = androidx.appcompat.R.style.Base_Theme_AppCompat_Light_Dialog_Alert
 
         timePickerDialog = TimePickerDialog(this, style, listener, hour, minute, true)
     }
