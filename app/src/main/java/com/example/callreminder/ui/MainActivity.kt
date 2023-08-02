@@ -1,5 +1,6 @@
 package com.example.callreminder.ui
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.NotificationChannel
@@ -7,11 +8,14 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
@@ -89,6 +93,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            Toast.makeText(
+                this,
+                R.string.read_contacts_permission_rejection_text,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -106,6 +122,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
 
         createNotificationChannel()
+        requestPostNotificationPermission()
     }
 
     override fun onResume() {
@@ -157,6 +174,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         )
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
+    }
+
+    private fun requestPostNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permission = Manifest.permission.POST_NOTIFICATIONS
+            if (checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED) {
+                requestPermissionLauncher.launch(permission)
+            }
+        }
     }
 
     private fun scheduleNotification(note: Note) {

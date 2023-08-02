@@ -16,6 +16,8 @@
     <string name="complete_call_text">Готово</string>
     <string name="empty_field_warning_text">Пожалуйста, введите заголовок</string>
     <string name="no_contact_text">Нет контактов</string>
-    <string name="rejection_read_contacts_text">Разрешение не предоставлено.
-        Вы можете это изменить в настройках приложения.</string>
+    <string name="read_contacts_permission_rejection_text">Разрешение на чтение контактов
+        не предоставлено. Вы можете это изменить в настройках приложения.</string>
+    <string name="post_notifications_permission_rejection_text">Разрешение на отправку уведомлений
+        не предоставлено. Вы можете это изменить в настройках приложения.</string>
 </resources>

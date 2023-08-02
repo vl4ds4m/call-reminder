@@ -81,7 +81,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         if (!isGranted) {
             Toast.makeText(
                 this,
-                R.string.rejection_read_contacts_text,
+                R.string.read_contacts_permission_rejection_text,
                 Toast.LENGTH_LONG
             ).show()
         }
