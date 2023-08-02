@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Call Reminder</string>
-    <string name="list_name">List of Calls</string>
+    <string name="list_name">List of calls</string>
     <string name="add_note_text">Add a new call</string>
     <string name="empty_list_text">No call</string>
     <string name="delete_note_text">Delete the note</string>
@@ -13,6 +13,8 @@
     <string name="select_contact_text">Contacts</string>
     <string name="make_call_text">Call</string>
     <string name="complete_call_text">Ready</string>
-    <string name="empty_field_warning_text">Please, type a title</string>
+    <string name="empty_field_warning_text">Please, type a title.</string>
     <string name="no_contact_text">No contact</string>
+    <string name="rejection_read_contacts_text">Permission is not granted.
+        You can change it in app settings.</string>
 </resources>

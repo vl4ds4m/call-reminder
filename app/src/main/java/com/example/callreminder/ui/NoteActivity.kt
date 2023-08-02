@@ -1,10 +1,12 @@
 package com.example.callreminder.ui
 
+import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -69,6 +71,18 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
                 this,
                 R.string.no_contact_text,
                 Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            Toast.makeText(
+                this,
+                R.string.rejection_read_contacts_text,
+                Toast.LENGTH_LONG
             ).show()
         }
     }
@@ -143,10 +157,17 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
             R.id.note_date -> datePickerDialog.show()
             R.id.note_time -> timePickerDialog.show()
             R.id.save_button -> addNote()
-            R.id.contact_button -> {
-                val intent = Intent(this, ContactsActivity::class.java)
-                selectContactLauncher.launch(intent)
-            }
+            R.id.contact_button -> selectContact()
+        }
+    }
+
+    private fun selectContact() {
+        val permission = Manifest.permission.READ_CONTACTS
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+            val intent = Intent(this, ContactsActivity::class.java)
+            selectContactLauncher.launch(intent)
+        } else {
+            requestPermissionLauncher.launch(permission)
         }
     }
 
