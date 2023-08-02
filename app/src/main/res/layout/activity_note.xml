@@ -11,7 +11,7 @@
     <EditText
         android:id="@+id/note_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:autofillHints=""
         android:background="@null"
@@ -34,7 +34,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -42,7 +42,7 @@
         <EditText
             android:id="@+id/note_phone"
             android:layout_width="260dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginEnd="16dp"
             android:autofillHints=""
             android:background="@null"
@@ -55,6 +55,7 @@
             android:id="@+id/contact_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/select_contact_text"
             android:onClick="onClick"
             android:src="@drawable/outline_contact_page_24"
             app:maxImageSize="40dp" />
