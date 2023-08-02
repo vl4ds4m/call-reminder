@@ -131,9 +131,8 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
 
-        val style = androidx.appcompat.R.style.Base_Theme_AppCompat_Light_Dialog_Alert
-
-        datePickerDialog = DatePickerDialog(this, style, listener, year, month, day)
+        datePickerDialog = DatePickerDialog(this, listener, year, month, day)
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis()
     }
 
     private fun createTimePicker() {
@@ -146,9 +145,7 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         val hour = calendar[Calendar.HOUR_OF_DAY]
         val minute = calendar[Calendar.MINUTE]
 
-        val style = androidx.appcompat.R.style.Base_Theme_AppCompat_Light_Dialog_Alert
-
-        timePickerDialog = TimePickerDialog(this, style, listener, hour, minute, true)
+        timePickerDialog = TimePickerDialog(this, listener, hour, minute, true)
     }
 
     override fun onClick(view: View) {
