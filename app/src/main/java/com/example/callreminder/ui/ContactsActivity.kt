@@ -102,7 +102,9 @@ class ContactsActivity : AppCompatActivity() {
         contacts = getContacts(this)
 
         if (contacts.size == 0) {
-            setResult(Activity.RESULT_CANCELED)
+            val intent = Intent()
+            intent.putExtra(PHONE_EXTRA, null as String?)
+            setResult(Activity.RESULT_OK)
             finish()
             return
         }

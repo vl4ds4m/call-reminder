@@ -66,13 +66,15 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
         if (result.resultCode == Activity.RESULT_OK) {
             val data = result.data
             val phone = data?.getStringExtra(PHONE_EXTRA)
-            notePhone.setText(phone)
-        } else if (result.resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(
-                this,
-                R.string.no_contact_text,
-                Toast.LENGTH_SHORT
-            ).show()
+            if (phone != null) {
+                notePhone.setText(phone)
+            } else {
+                Toast.makeText(
+                    this,
+                    R.string.no_contact_text,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
