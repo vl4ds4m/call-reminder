@@ -8,7 +8,7 @@ import com.example.callreminder.R
 
 class ContactsAdapter(
     private val context: Context,
-    private val list: List<Contact>,
+    private var list: List<Contact>,
     private val listener: ContactsClickListener
 ) : RecyclerView.Adapter<ContactsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -31,4 +31,8 @@ class ContactsAdapter(
         }
     }
 
+    fun updateContacts(newList: List<Contact>) {
+        list = newList
+        notifyDataSetChanged()
+    }
 }

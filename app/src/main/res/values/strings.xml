@@ -19,4 +19,5 @@
         is not granted. You can change it in app settings.</string>
     <string name="post_notifications_permission_rejection_text">Permission to post notifications
         is not granted. You can change it in app settings.</string>
+    <string name="search_hint">Search contacts</string>
 </resources>

@@ -20,4 +20,5 @@
         не предоставлено. Вы можете это изменить в настройках приложения.</string>
     <string name="post_notifications_permission_rejection_text">Разрешение на отправку уведомлений
         не предоставлено. Вы можете это изменить в настройках приложения.</string>
+    <string name="search_hint">Искать контакты</string>
 </resources>
