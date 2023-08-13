@@ -22,7 +22,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.callreminder.DATE_TIME_FORMATTER
 import com.example.callreminder.R
 import com.example.callreminder.db.AppDB
@@ -115,7 +114,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, PopupMenu.OnMenu
         recyclerView = findViewById(R.id.notes)
         recyclerView.adapter = notesAdapter
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         emptyListView = findViewById(R.id.empty_list)
         emptyListView.visibility = if (notes.isEmpty()) View.VISIBLE else View.INVISIBLE
