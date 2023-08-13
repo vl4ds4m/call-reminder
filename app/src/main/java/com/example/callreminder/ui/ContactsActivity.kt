@@ -80,7 +80,9 @@ class ContactsActivity : AppCompatActivity() {
         if (text != null) {
             val filteredContacts = ArrayList<Contact>()
             for (contact in contacts) {
-                if (contact.name.contains(text) || contact.phone.contains(text)) {
+                if (contact.name.lowercase().contains(text.lowercase()) ||
+                    contact.phone.lowercase().contains(text.lowercase())) {
+
                     filteredContacts.add(contact)
                 }
             }
