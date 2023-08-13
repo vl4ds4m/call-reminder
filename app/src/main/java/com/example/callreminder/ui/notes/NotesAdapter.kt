@@ -29,10 +29,10 @@ class NotesAdapter(
         holder.noteTitle.text = note.title
         holder.noteDateTime.text = getPrettyDateTime(note.dateTime)
 
-        holder.noteCard.setOnClickListener { listener.onClick(list[holder.adapterPosition]) }
+        holder.noteCard.setOnClickListener { listener.onClick(note) }
 
         holder.noteCard.setOnLongClickListener {
-            listener.onLongClick(list[holder.adapterPosition], holder.noteCard)
+            listener.onLongClick(note, holder.noteCard)
             true
         }
     }
