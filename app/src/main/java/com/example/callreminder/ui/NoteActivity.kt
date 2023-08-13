@@ -81,7 +81,10 @@ class NoteActivity : AppCompatActivity(), View.OnClickListener {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (!isGranted) {
+        if (isGranted) {
+            val intent = Intent(this, ContactsActivity::class.java)
+            selectContactLauncher.launch(intent)
+        } else {
             AlertDialog.Builder(this)
                 .setMessage(R.string.post_notifications_permission_rejection_text)
                 .show()
